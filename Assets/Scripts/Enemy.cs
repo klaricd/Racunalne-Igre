@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour
 
     public float health;
 
+    public GameObject healthBar;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +29,8 @@ public class Enemy : MonoBehaviour
         direction.Normalize();
         movement = direction;
 
-        if(health <= 0)
+        healthBar.transform.localScale = new Vector3(health / 100, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+        if (health <= 0)
         {
             Die();
         }
