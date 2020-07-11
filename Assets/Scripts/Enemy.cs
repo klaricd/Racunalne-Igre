@@ -13,17 +13,18 @@ public class Enemy : MonoBehaviour
 
     public GameObject healthBar;
 
-    // Start is called before the first frame update
+    private Transform playerPos;
+
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        transform.position = Vector2.MoveTowards(transform.position, playerPos.position, moveSpeed * Time.deltaTime);
+
         Vector3 direction = player.position - transform.position;
-        //Debug.Log(direction);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         rb.rotation = angle;
         direction.Normalize();
@@ -34,6 +35,19 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.name == "Player")
+        {
+            health -= 5;
+        }
+    }
+
+        public void Awake()
+    {
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void FixedUpdate()
